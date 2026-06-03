@@ -2,195 +2,106 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinovuz Max</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f12; color: #ffffff; margin: 0; padding: 10px; }
-        .header { text-align: center; padding: 15px; background: linear-gradient(135deg, #1e1e2f, #11111b); border-radius: 12px; margin-bottom: 15px; }
-        .header h3 { margin: 0; color: #a5a6f6; font-size: 16px; }
-        .header h2 { margin: 5px 0 0 0; color: #ffffff; font-size: 22px; font-weight: 600; }
-        .title-bar { text-align: center; margin: 10px 0; font-size: 18px; font-weight: bold; color: #00d2ff; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; background-color: #1e1e2f; color: #aaa; border: 1px solid #2d2d44; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .tab-btn.active { background-color: #007bff; color: white; border-color: #007bff; box-shadow: 0 0 10px rgba(0,123,255,0.5); }
-        .content-section { display: none; }
-        .content-section.active { display: block; }
-        
-        /* Asosiy papka tugmasi */
-        .list-item { background: #1a1a26; padding: 15px; margin-bottom: 8px; border-radius: 8px; border-left: 4px solid #007bff; cursor: pointer; transition: 0.2s; display: block; }
-        .list-item:hover { background: #222235; transform: translateX(3px); }
-        
-        /* Mavzular ro'yxati */
-        .sub-list { margin-top: 8px; margin-bottom: 15px; display: none; }
-        .sub-item { background: #252538; padding: 12px; margin-bottom: 6px; border-radius: 6px; font-size: 14px; border-left: 3px solid #00d2ff; cursor: pointer; transition: 0.2s; }
-        .sub-item:hover { background: #2d2d44; transform: translateX(3px); }
-        .mock-item { border-left-color: #ffc107; }
-
-        /* Orqaga qaytish tugmasi */
-        .back-btn { display: none; background: #2d2d44; color: #00d2ff; border: 1px solid #00d2ff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-bottom: 12px; font-weight: bold; text-align: center; }
+        body { font-family: sans-serif; background-color: #0f0f12; color: #fff; margin: 0; padding: 20px; }
+        .header { text-align: center; background: #1a1a26; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .list-item { background: #1a1a26; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #007bff; cursor: pointer; }
+        .file { background: #252538; padding: 12px; margin: 5px 0; border-radius: 6px; cursor: pointer; border-left: 3px solid #00d2ff; }
+        #quiz-container { display: none; background: #1a1a26; padding: 20px; border-radius: 12px; border: 1px solid #ffc107; }
+        .timer { font-size: 24px; color: #ff4757; font-weight: bold; margin-bottom: 10px; }
+        .option { background: #11111b; padding: 12px; margin: 8px 0; border-radius: 6px; cursor: pointer; border: 1px solid #444; }
+        .option:hover { background: #353548; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h3>Tuzuvchi va Mentor:</h3>
+        <h3>Tuzuvchi va Yaratuvchi:</h3>
         <h2>Saydazimov Shuxrat</h2>
     </div>
 
-    <div class="title-bar">📚 Tarix testlari</div>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('mavzulashtirilgan')">Mavzulashtirilgan testlar</button>
-        <button class="tab-btn" onclick="switchTab('mock')">Milliy sertifikat MOCK</button>
+    <!-- Asosiy Menyu -->
+    <div id="main-menu">
+        <div class="list-item" onclick="showTopics()">📁 6-sinf. Qadimgi dunyo tarixi</div>
     </div>
 
-    <div id="mavzulashtirilgan" class="content-section active">
-        
-        <button id="backButton" class="back-btn" onclick="closeAllClasses()">⬅️ Boshqa sinflarni ko'rish</button>
-
-        <!-- 6-SINF -->
-        <div id="btn-sinf6" class="list-item" onclick="toggleSub('sinf6', 'btn-sinf6')">📁 6-sinf. Qadimgi dunyo tarixi</div>
-        <div id="sinf6" class="sub-list">
-            <div class="sub-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA', false)">📄 1-mavzu. Kirish</div>
-            <div class="sub-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA', false)">📄 2-mavzu. Eng qadimgi odamlar</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Qadimgi Misr va Ikki daryo oralig'i</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Qadimgi Hindiston va Xitoy</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 5-mavzu. O'rta Osiyo xalqlari ilk temir davrida</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 6-mavzu. Qadimgi Yunoniston va Rim imperiyasi</div>
-        </div>
-
-        <!-- 7-SINF O'ZBEKISTON -->
-        <div id="btn-sinf7uz" class="list-item" onclick="toggleSub('sinf7uz', 'btn-sinf7uz')">📁 7-sinf. O'zbekiston tarixi</div>
-        <div id="sinf7uz" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Kirish</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. Ilk o'rta asrlarda O'rta Osiyo</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Arab xalifaligining idorasi va Movarounnahr</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Somoniylar va Qoraxoniylar davlati</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 5-mavzu. IX-XII asrlarda madaniy hayot va uyg'onish davri</div>
-        </div>
-
-        <!-- 7-SINF JAHON -->
-        <div id="btn-sinf7j" class="list-item" onclick="toggleSub('sinf7j', 'btn-sinf7j')">📁 7-sinf. Jahon tarixi</div>
-        <div id="sinf7j" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Kirish</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. G'arbiy Yevropada feodal jamiyati</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Vizantiya imperiyasi va Slavyanlar</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Arab xalifaligining tashkil topishi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 5-mavzu. O'rta asrlarda Hindiston, Xitoy va Yaponiya</div>
-        </div>
-
-        <!-- 8-SINF O'ZBEKISTON -->
-        <div id="btn-sinf8uz" class="list-item" onclick="toggleSub('sinf8uz', 'btn-sinf8uz')">📁 8-sinf. O'zbekiston tarixi</div>
-        <div id="sinf8uz" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Mo'g'ullar istilosi va unga qarshi kurash</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. Amir Temur va Temuriylar davlati</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Temuriylar davrida ilm-fan, me'morchilik va madaniyat</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Shayboniylar va Ashtarxoniylar davri</div>
-        </div>
-
-        <!-- 8-SINF JAHON -->
-        <div id="btn-sinf8j" class="list-item" onclick="toggleSub('sinf8j', 'btn-sinf8j')">📁 8-sinf. Jahon tarixi</div>
-        <div id="sinf8j" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Buyuk geografik kashfiyotlar</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. Yevropada Uyg'onish davri va Reformatsiya</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Angliya va Fransiya burjua inqiloblari</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Amerika Qo'shma Shtatarsining tashkil topishi</div>
-        </div>
-
-        <!-- 9-SINF O'ZBEKISTON -->
-        <div id="btn-sinf9uz" class="list-item" onclick="toggleSub('sinf9uz', 'btn-sinf9uz')">📁 9-sinf. O'zbekiston tarixi</div>
-        <div id="sinf9uz" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Buxoro amirligi, Xiva va Qo'qon xonliklari</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. Rossiya imperiyasining xonliklarni bosib olishi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Mustamlakachilik tartibi va milliy ozodlik harakatlari</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Turkistonda jadidchilik harakatining vujudga kelishi</div>
-        </div>
-
-        <!-- 9-SINF JAHON -->
-        <div id="btn-sinf9j" class="list-item" onclick="toggleSub('sinf9j', 'btn-sinf9j')">📁 9-sinf. Jahon tarixi</div>
-        <div id="sinf9j" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Sanoat to'ntarishi va uning global oqibatlari</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. XIX asrda yetakchi G'arb davlatlarining rivojlanishi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Osiyo va Afrika mamlakatlari yangi davrda</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Birinchi jahon urushi sabablari va uning yakunlari</div>
-        </div>
-
-        <!-- 10-SINF O'ZBEKISTON VA JAHON -->
-        <div id="btn-sinf10" class="list-item" onclick="toggleSub('sinf10', 'btn-sinf10')">📁 10-sinf. Eng yangi davr tarixi</div>
-        <div id="sinf10" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. Turkiston muxtoriyati va sho'rolar mustamlakachiligi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. O'zbekistonda sovet hokimiyati qatag'onlari</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Ikkinchi jahon urushi yillari va front ortidagi hayot</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Urushdan keyingi dunyo va xalqaro munosabatlar</div>
-        </div>
-
-        <!-- 11-SINF O'ZBEKISTON VA JAHON -->
-        <div id="btn-sinf11" class="list-item" onclick="toggleSub('sinf11', 'btn-sinf11')">📁 11-sinf. Eng yangi davr (Mustaqillik yillari)</div>
-        <div id="sinf11" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 1-mavzu. O'zbekiston Respublikasining mustaqillikka erishishi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 2-mavzu. Davlat ramzlari va Konstitutsiyaning qabul qilinishi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 3-mavzu. Yangi O'zbekiston: Demokratik islohotlarning yangi bosqichi</div>
-            <div class="sub-item" onclick="openTest('LINK', false)">📄 4-mavzu. Zamonaviy dunyodagi global muammolar va xalqaro integratsiya</div>
-        </div>
-
+    <!-- Mavzular -->
+    <div id="topics-menu" style="display:none;">
+        <button onclick="hideTopics()">⬅️ Boshqa sinflarni ko'rish</button>
+        <div class="file" onclick="confirmAndStart()">📄 1-mavzu. Kirish</div>
     </div>
 
-    <!-- MOCK IMPTIHONLAR (Bu yerda true parametri qo'shildi) -->
-    <div id="mock" class="content-section">
-        <div class="list-item mock-item" onclick="openTest('LINK', true)">📝 Milliy sertifikat Variant #1</div>
-        <div class="list-item mock-item" onclick="openTest('LINK', true)">📝 Milliy sertifikat Variant #2</div>
-        <div class="list-item mock-item" onclick="openTest('LINK', true)">📝 Milliy sertifikat Variant #3</div>
-        <div class="list-item mock-item" onclick="openTest('LINK', true)">📝 Milliy sertifikat Variant #4</div>
-        <div class="list-item mock-item" onclick="openTest('LINK', true)">📝 Milliy sertifikat Variant #5</div>
+    <!-- Test oynasi -->
+    <div id="quiz-container">
+        <div class="timer" id="timer">15</div>
+        <h3 id="question">Savol yuklanmoqda...</h3>
+        <div id="options"></div>
     </div>
 
     <script>
-        // Tablarni almashtirish
-        function switchTab(tabId) {
-            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-            
-            closeAllClasses();
+        const quizData = [
+            {q: "Quyidagi suratda kim tasvirlangan?", a: ["Plutarx", "Geradot", "Strabon", "Arrian"], c: 1},
+            {q: "Behistun qoyasi yozuvlari qayerda joylashgan?", a: ["Pokistonda", "Eronda", "Afg'onistonda", "Turkmanistonda"], c: 1},
+            {q: "Yetakchilik ayoldan erkakka o'tishi sababi?", a: ["Urushlar", "Uy ishlari", "Mehnat qurollari takomillashuvi", "Barchasi"], c: 2},
+            {q: "Yunon tarixchisi Strabon qachon yashagan?", a: ["Mil.avv I asr bosh", "Mil.avv I asr oxir", "Mil. I asr bosh", "Mil. I asr oxir"], c: 0},
+            {q: "Patriarxat nima?", a: ["Ona urug'i", "Ota urug'i", "Ilk podsholik", "Urug'chilik"], c: 1},
+            {q: "Quyidagi suratda kim tasvirlangan?", a: ["Plutarx", "Geradot", "Strabon", "Arrian"], c: 0},
+            {q: "Ibtidoiy jamoalar ... urug'lariga bo'lina boshladi.", a: ["qarindosh", "qabiladosh", "kasbdosh", "yondosh"], c: 1},
+            {q: "Nima uchun 'tosh davri'?", a: ["Suratlar", "Taqinchoqlar", "Tosh qoldiqlari", "Toshdan mehnat qurollari"], c: 3},
+            {q: "Ilk urug' jamoalari ... atrofida birlashgan.", a: ["ayol", "erkak", "kohin", "sarkarda"], c: 0},
+            {q: "Qadimgi dunyo tarixi qaysi davrlarni o'z ichiga oladi?", a: ["478-yilgacha", "Iskandargacha", "476-yilgacha", "1453-yilgacha"], c: 2},
+            {q: "Paleolit nima?", a: ["Yangi tosh", "Mis-tosh", "Qadimgi tosh", "O'rta tosh"], c: 2},
+            {q: "Aleksandrning harbiy yurishlari asari muallifi?", a: ["Plutarx", "Geradot", "Strabon", "Arrian"], c: 3},
+            {q: "Matriarxat nima?", a: ["Ona urug'i", "Ota urug'i", "Ilk podsholik", "Urug'chilik"], c: 0},
+            {q: "Geografiya asari muallifi?", a: ["Plutarx", "Geradot", "Strabon", "Arrian"], c: 2},
+            {q: "Suratda nima tasvirlangan?", a: ["Avesto", "Kirmonshoh", "Behistun", "Naqshi Rustam"], c: 2},
+            {q: "Paleos, mezos, neos, eneus ma'nolari?", a: ["qadimgi, o'rta, yangi, mis", "yangi, o'rta, qadimgi, mis", "qadimgi, o'rta, mis, yangi", "qadimgi, o'rta, yangi, mis (lotin)"], c: 0},
+            {q: "Yunon tarixchisi Arrian qachon yashagan?", a: ["I asr", "II asr", "III asr", "IV asr"], c: 1},
+            {q: "Behistun qoyasi qaysi shoh buyrug'i?", a: ["Doro I", "Doro III", "Kir II", "Kserks"], c: 0},
+            {q: "Mezolit nima?", a: ["Yangi tosh", "Mis-tosh", "Qadimgi tosh", "O'rta tosh"], c: 3},
+            {q: "Xalqlarning tarixi qaysi tuzumdan boshlangan?", a: ["Feodalizm", "Matriarxat", "Patriarxat", "Ibtidoiy"], c: 3},
+            {q: "Tarix asari muallifi?", a: ["Plutarx", "Geradot", "Strabon", "Arrian"], c: 1},
+            {q: "Neolit nima?", a: ["Yangi tosh", "Mis-tosh", "Qadimgi tosh", "O'rta tosh"], c: 0},
+            {q: "Eng qadimgi yozma manba?", a: ["Xitoy", "Behistun", "Yunon", "Avesto"], c: 1},
+            {q: "Eneolit nima?", a: ["Yangi tosh", "Mis-tosh", "Qadimgi tosh", "O'rta tosh"], c: 1},
+            {q: "Qazishma ishlarini kim olib boradi?", a: ["Arxeolog", "Etnograf", "Antropolog", "Lingvist"], c: 0},
+            {q: "Skeletlarni kim o'rganadi?", a: ["Arxeolog", "Etnograf", "Antropolog", "Lingvist"], c: 2},
+            {q: "Moddiy manbalar nima?", a: ["Ma'naviy", "Tarixiy", "Moddiy", "Antropologik"], c: 2},
+            {q: "Litos nima?", a: ["Temir", "Mis", "Tosh", "Oltin"], c: 2},
+            {q: "Urf-odatlarni kim o'rganadi?", a: ["Arxeolog", "Etnograf", "Antropolog", "Lingvist"], c: 1},
+            {q: "Gerodot qachon yashagan?", a: ["Mil.avv II", "Mil.avv IV", "Mil.avv V", "Mil.avv III"], c: 2}
+        ];
+
+        let currentQ = 0, score = 0, timeLeft = 15, timer;
+
+        function showTopics() { document.getElementById('main-menu').style.display = 'none'; document.getElementById('topics-menu').style.display = 'block'; }
+        function hideTopics() { document.getElementById('main-menu').style.display = 'block'; document.getElementById('topics-menu').style.display = 'none'; }
+        
+        function confirmAndStart() { if(confirm("Testni boshlaysizmi?")) { document.getElementById('topics-menu').style.display = 'none'; document.getElementById('quiz-container').style.display = 'block'; startQuiz(); } }
+        
+        function startQuiz() { currentQ = 0; score = 0; showQuestion(); }
+        
+        function showQuestion() {
+            timeLeft = 15;
+            document.getElementById('timer').innerText = timeLeft;
+            let q = quizData[currentQ];
+            document.getElementById('question').innerText = (currentQ+1) + ". " + q.q;
+            let ops = document.getElementById('options'); ops.innerHTML = '';
+            q.a.forEach((opt, i) => { ops.innerHTML += `<div class="option" onclick="check(${i})">${opt}</div>`; });
+            timer = setInterval(() => {
+                timeLeft--; document.getElementById('timer').innerText = timeLeft;
+                if(timeLeft <= 0) { clearInterval(timer); check(-1); }
+            }, 1000);
         }
 
-        // Biror sinf bosilganda qolganlarini yashirish logikasi
-        function toggleSub(subListId, clickedBtnId) {
-            document.querySelectorAll('.list-item').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.sub-list').forEach(el => el.style.display = 'none');
-            
-            document.getElementById(clickedBtnId).style.display = 'block';
-            document.getElementById(subListId).style.display = 'block';
-            
-            document.getElementById('backButton').style.display = 'block';
-        }
-
-        // Hamma sinflarni qaytadan ko'rsatish (Orqaga qaytish bosilganda)
-        function closeAllClasses() {
-            document.querySelectorAll('.list-item').forEach(el => el.style.display = 'block');
-            document.querySelectorAll('.sub-list').forEach(el => el.style.display = 'none');
-            
-            document.getElementById('backButton').style.display = 'none';
-        }
-
-        // Test havolasini ochish (Tasdiqlash oynasi bilan)
-        function openTest(url, isMock) {
-            if(url !== 'LINK' && url !== '') {
-                // Agar bosilgan element MOCK bo'lsa, ogohlantirish chiqaramiz
-                if(isMock) {
-                    var rozilik = confirm("Haqiqatdan ham testni boshlamoqchimisiz?");
-                    if(rozilik) {
-                        window.location.href = url; // "Ha" deb bosilsa, link ochiladi
-                    }
-                } else {
-                    // Mavzulashtirilgan test bo'lsa, to'g'ridan-to'g'ri ochilaveradi
-                    window.location.href = url;
-                }
-            } else {
-                alert("Ushbu mavzu uchun test yaqin kunlarda yuklanadi!");
-            }
+        function check(idx) {
+            clearInterval(timer);
+            if(idx === quizData[currentQ].c) { alert("✅ To'g'ri!"); score++; }
+            else { alert("❌ Xato!"); }
+            currentQ++;
+            if(currentQ < quizData.length) showQuestion();
+            else { alert("Test tugadi! Natija: " + score + "/30"); location.reload(); }
         }
     </script>
 </body>
