@@ -5,27 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinovuz Max</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f12; color: #ffffff; margin: 0; padding: 15px; }
-        .header { text-align: center; padding: 15px; background: linear-gradient(135deg, #1e1e2f, #11111b); border-radius: 12px; margin-bottom: 15px; border: 1px solid #2d2d44; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f12; color: #ffffff; margin: 0; padding: 10px; }
+        .header { text-align: center; padding: 15px; background: linear-gradient(135deg, #1e1e2f, #11111b); border-radius: 12px; margin-bottom: 15px; }
         .header h3 { margin: 0; color: #a5a6f6; font-size: 16px; }
         .header h2 { margin: 5px 0 0 0; color: #ffffff; font-size: 22px; font-weight: 600; }
         .title-bar { text-align: center; margin: 10px 0; font-size: 18px; font-weight: bold; color: #00d2ff; }
         .tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; background-color: #1e1e2f; color: #aaa; border: 1px solid #2d2d44; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; transition: 0.3s; }
-        .tab-btn.active { background: #007bff; color: white; border-color: #007bff; box-shadow: 0 0 10px rgba(0,123,255,0.5); }
+        .tab-btn { flex: 1; background-color: #1e1e2f; color: #aaa; border: 1px solid #2d2d44; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background-color: #007bff; color: white; border-color: #007bff; box-shadow: 0 0 10px rgba(0,123,255,0.5); }
         .content-section { display: none; }
         .content-section.active { display: block; }
-        .list-item { background: #1a1a26; padding: 15px; margin-bottom: 8px; border-radius: 8px; border-left: 4px solid #007bff; cursor: pointer; transition: 0.2s; }
+        
+        /* Asosiy papka tugmasi */
+        .list-item { background: #1a1a26; padding: 15px; margin-bottom: 8px; border-radius: 8px; border-left: 4px solid #007bff; cursor: pointer; transition: 0.2s; display: block; }
         .list-item:hover { background: #222235; transform: translateX(3px); }
-        .sub-list { margin-left: 15px; margin-top: 5px; display: none; }
-        .sub-item { background: #252538; padding: 10px; margin-bottom: 5px; border-radius: 6px; font-size: 14px; border-left: 3px solid #00d2ff; }
-        .sub-item:hover { background: #2d2d44; }
+        
+        /* Mavzular ro'yxati */
+        .sub-list { margin-top: 8px; margin-bottom: 15px; display: none; }
+        .sub-item { background: #252538; padding: 12px; margin-bottom: 6px; border-radius: 6px; font-size: 14px; border-left: 3px solid #00d2ff; cursor: pointer; transition: 0.2s; }
+        .sub-item:hover { background: #2d2d44; transform: translateX(3px); }
         .mock-item { border-left-color: #ffc107; }
+
+        /* Orqaga qaytish tugmasi */
+        .back-btn { display: none; background: #2d2d44; color: #00d2ff; border: 1px solid #00d2ff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-bottom: 12px; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- Tepadagi ismingiz chiqadigan qism -->
     <div class="header">
         <h3>Tuzuvchi va Mentor:</h3>
         <h2>Saydazimov Shuxrat</h2>
@@ -33,55 +39,74 @@
 
     <div class="title-bar">📚 Tarix testlari</div>
 
-    <!-- 2 ta Tab bo'limi -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('mavzulashtirilgan')">Mavzulashtirilgan testlar</button>
         <button class="tab-btn" onclick="switchTab('mock')">Milliy sertifikat MOCK</button>
     </div>
 
-    <!-- 1-TAB: MAVZULASHTIRILGAN TESTLAR -->
     <div id="mavzulashtirilgan" class="content-section active">
-        <!-- 6-sinf -->
-        <div class="list-item" onclick="toggleSub('sinf6')">📁 6-sinf. Qadimgi dunyo tarixi</div>
+        
+        <button id="backButton" class="back-btn" onclick="closeAllClasses()">⬅️ Boshqa sinflarni ko'rish</button>
+
+        <div id="btn-sinf6" class="list-item" onclick="toggleSub('sinf6', 'btn-sinf6')">📁 6-sinf. Qadimgi dunyo tarixi</div>
         <div id="sinf6" class="sub-list">
-            <div class="sub-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">📝 1-mavzu. Kirish</div>
-            <div class="sub-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">📝 2-mavzu. Eng qadimgi odamlar</div>
+            <div class="sub-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">📄 1-mavzu. Kirish</div>
+            <div class="sub-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">📄 2-mavzu. Eng qadimgi odamlar</div>
         </div>
 
-        <!-- 7-sinf O'zbekiston -->
-        <div class="list-item" onclick="toggleSub('sinf7uz')">📁 7-sinf. O'zbekiston tarixi</div>
+        <div id="btn-sinf7uz" class="list-item" onclick="toggleSub('sinf7uz', 'btn-sinf7uz')">📁 7-sinf. O'zbekiston tarixi</div>
         <div id="sinf7uz" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK')">📝 1-mavzu. Kirish</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Kirish</div>
         </div>
 
-        <!-- 7-sinf Jahon -->
-        <div class="list-item" onclick="toggleSub('sinf7j')">📁 7-sinf. Jahon tarixi</div>
+        <div id="btn-sinf7j" class="list-item" onclick="toggleSub('sinf7j', 'btn-sinf7j')">📁 7-sinf. Jahon tarixi</div>
         <div id="sinf7j" class="sub-list">
-            <div class="sub-item" onclick="openTest('LINK')">📝 1-mavzu. Kirish</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Kirish</div>
         </div>
     </div>
 
-    <!-- 2-TAB: MOCK BO'LIMI -->
     <div id="mock" class="content-section">
-        <div class="list-item mock-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">🏆 Milliy sertifikat MOCK 1</div>
-        <div class="list-item mock-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">🏆 Milliy sertifikat MOCK 2</div>
-        <div class="list-item mock-item" onclick="openTest('https://GOOGLE_FORM_LINKI_SHU_YERGA')">🏆 Milliy sertifikat MOCK 3</div>
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #1</div>
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #2</div>
     </div>
 
     <script>
-        // Tablarni almashtirish funksiyasi
+        // Tablarni almashtirish
         function switchTab(tabId) {
             document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            event.target.classList.add('active');
+            
+            // Tab almashganda hamma narsani asliga qaytarish
+            closeAllClasses();
         }
 
-        // Sinflar bosilganda mavzularni ochish
-        function toggleSub(id) {
-            let el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        // Biror sinf bosilganda qolganlarini yashirish logikasi
+        function toggleSub(subListId, clickedBtnId) {
+            // Hamma asosiy sinf tugmalarini berkitish
+            document.querySelectorAll('.list-item').forEach(el => el.style.display = 'none');
+            // Hamma mavzular ro'yxatini yopish
+            document.querySelectorAll('.sub-list').forEach(el => el.style.display = 'none');
+            
+            // Faqat bosilgan sinf tugmasini va uning ichidagi mavzularni ochish
+            document.getElementById(clickedBtnId).style.display = 'block';
+            document.getElementById(subListId).style.display = 'block';
+            
+            // "Orqaga qaytish" tugmasini ko'rsatish
+            document.getElementById('backButton').style.display = 'block';
+        }
+
+        // Hamma sinflarni qaytadan ko'rsatish (Orqaga qaytish bosilganda)
+        function closeAllClasses() {
+            // Hamma sinf tugmalarini qayta ko'rsatish
+            document.querySelectorAll('.list-item').forEach(el => el.style.display = 'block');
+            // Hamma mavzular ro'yxatini yopish
+            document.querySelectorAll('.sub-list').forEach(el => el.style.display = 'none');
+            
+            // "Orqaga qaytish" tugmasini qayta berkitish
+            document.getElementById('backButton').style.display = 'none';
         }
 
         // Test havolasini ochish
