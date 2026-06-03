@@ -1,413 +1,184 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>SHUHRAT SAYDAZIMOV - Imtihon Platformasi</title>
-	<style>
-		:root { --p: #2563eb; --s: #10b981; --d: #ef4444; --b: #f1f5f9; }
-		* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-		body { background: var(--b); color: #1e293b; padding: 15px; }
-		.container { max-width: 850px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinovuz Max</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f12; color: #ffffff; margin: 0; padding: 10px; }
+        .header { text-align: center; padding: 15px; background: linear-gradient(135deg, #1e1e2f, #11111b); border-radius: 12px; margin-bottom: 15px; }
+        .header h3 { margin: 0; color: #a5a6f6; font-size: 16px; }
+        .header h2 { margin: 5px 0 0 0; color: #ffffff; font-size: 22px; font-weight: 600; }
+        .title-bar { text-align: center; margin: 10px 0; font-size: 18px; font-weight: bold; color: #00d2ff; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; background-color: #1e1e2f; color: #aaa; border: 1px solid #2d2d44; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background-color: #007bff; color: white; border-color: #007bff; box-shadow: 0 0 10px rgba(0,123,255,0.5); }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
         
-		.user-header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; color: white; padding: 15px 25px; border-radius: 12px; margin-bottom: 25px; }
-		.user-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #38bdf8; }
-		.system-title { font-size: 14px; font-weight: 500; opacity: 0.8; }
+        /* Asosiy papka tugmasi */
+        .list-item { background: #1a1a26; padding: 15px; margin-bottom: 8px; border-radius: 8px; border-left: 4px solid #007bff; cursor: pointer; transition: 0.2s; display: block; }
+        .list-item:hover { background: #222235; transform: translateX(3px); }
+        
+        /* Mavzular ro'yxati */
+        .sub-list { margin-top: 8px; margin-bottom: 15px; display: none; }
+        .sub-item { background: #252538; padding: 12px; margin-bottom: 6px; border-radius: 6px; font-size: 14px; border-left: 3px solid #00d2ff; cursor: pointer; transition: 0.2s; }
+        .sub-item:hover { background: #2d2d44; transform: translateX(3px); }
+        .mock-item { border-left-color: #ffc107; }
 
-		.menu-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #0f172a; text-align: center; }
-		.section-box { border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 25px; background: #fff; }
-		.section-box h3 { margin-bottom: 15px; color: #1e293b; font-size: 18px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
-        
-		.variant-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-		.card-v { background: #f8fafc; border: 2px solid #e2e8f0; padding: 20px; border-radius: 10px; cursor: pointer; transition: 0.2s; text-align: center; }
-		.card-v:hover { border-color: var(--p); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(37,99,235,0.08); }
-		.card-v h4 { font-size: 15px; color: #1e293b; margin-bottom: 5px; font-weight: 700; }
-		.card-v p { font-size: 12px; color: #64748b; }
-
-		.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-		.modal-box { background: white; padding: 30px; border-radius: 12px; max-width: 450px; width: 100%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: scaleUp 0.18s ease-out; }
-		@keyframes scaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-		.modal-box h4 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #0f172a; }
-		.modal-box p { font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
-		.modal-btns { display: flex; gap: 12px; justify-content: center; }
-
-		.header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 25px; position: sticky; top: 0; background: white; z-index: 10; }
-		#timer { font-size: 22px; font-weight: 700; color: var(--d); background: #fef2f2; padding: 6px 16px; border-radius: 8px; border: 1px solid #fee2e2; }
-        
-		.btn { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.1s; font-size: 14px; }
-		.btn-p { background: var(--p); color: white; }
-		.btn-d { background: var(--d); color: white; }
-		.btn-g { background: #e2e8f0; color: #475569; }
-		.btn:hover { opacity: 0.9; }
-        
-		.q-card { background: #fff; border: 1px solid #cbd5e1; padding: 22px; border-radius: 10px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-		.q-txt { font-weight: 600; font-size: 16px; margin-bottom: 15px; line-height: 1.6; color: #0f172a; }
-        
-		.q-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: #fff; font-size: 14px; }
-		.q-table th, .q-table td { border: 1px solid #94a3b8; padding: 11px 13px; text-align: left; line-height: 1.4; }
-		.q-table th { background: #f8fafc; font-weight: 700; color: #334155; }
-		.q-table tr:nth-child(even) { background: #f8fafc; }
-        
-		.options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
-		@media (max-width: 600px) { .options { grid-template-columns: 1fr; } }
-		.opt { display: flex; align-items: center; padding: 12px 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 500; transition: 0.1s; }
-		.opt input { margin-right: 12px; transform: scale(1.2); }
-		.opt:hover { background: #f1f5f9; }
-		.opt.selected { border-color: var(--p); background: #eff6ff; color: var(--p); }
-        
-		.alert { background: #fff5f5; border-left: 5px solid var(--d); padding: 14px; margin: 30px 0 15px 0; color: #c53030; font-weight: bold; font-size: 14px; border-radius: 4px; }
-		.sub-q { margin-top: 18px; padding-left: 15px; border-left: 3px solid #cbd5e1; }
-		.sub-title { font-weight: 600; color: #475569; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
-		.text-input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; text-transform: uppercase; font-weight: bold; }
-        
-		.res-icon { font-size: 18px; font-weight: bold; margin-left: 10px; vertical-align: middle; }
-		.correct-ans { margin-top: 10px; font-size: 14px; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 8px 14px; border-radius: 5px; display: inline-block; border: 1px dashed #bfdbfe; }
-		.status-correct { border-color: var(--s) !important; background: #ecfdf5 !important; color: #065f46; }
-		.status-wrong { border-color: var(--d) !important; background: #fef2f2 !important; color: #991b1b; }
-        
-		#quiz-area, #result-screen { display: none; }
-		.score-box { font-size: 46px; font-weight: 800; margin: 25px 0; color: var(--p); }
-	</style>
+        /* Orqaga qaytish tugmasi */
+        .back-btn { display: none; background: #2d2d44; color: #00d2ff; border: 1px solid #00d2ff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-bottom: 12px; font-weight: bold; text-align: center; }
+    </style>
 </head>
 <body>
 
-<div class="container" style="padding: 0; background: transparent; box-shadow: none; margin-bottom: 15px;">
-	<div class="user-header">
-		<div class="user-name">SHUHRAT SAYDAZIMOV</div>
-		<div class="system-title">Tarix fanidan onlayn imtihonlar va nazoratlar platformasi</div>
-	</div>
-</div>
+    <div class="header">
+        <h3>Tuzuvchi va Mentor:</h3>
+        <h2>Saydazimov Shuxrat</h2>
+    </div>
 
-<div class="container" id="menu-screen">
-	<div class="menu-title">Imtihon Tizimi</div>
-    
-	<!-- MAVZULASHTIRILGAN TESTLAR BO'LIMI (TOZA HOLLATDA) -->
-	<div class="section-box">
-		<h3>Mavzulashtirilgan Testlar Bo'limi</h3>
-		<div class="variant-grid">
-			<div class="card-v" onclick="askConfirmation('qozoq')">
-				<h4>1916-yilgi qo'zg'olonlar</h4>
-				<p>Mavzuga oid testlar</p>
-			</div>
-			<div class="card-v" onclick="askConfirmation('jadid')">
-				<h4>Jadidchilik harakati</h4>
-				<p>Mavzuga oid testlar</p>
-			</div>
-			<div class="card-v" onclick="askConfirmation('xonlik')">
-				<h4>Xonliklar davri</h4>
-				<p>Mavzuga oid testlar</p>
-			</div>
-		</div>
-	</div>
+    <div class="title-bar">📚 Tarix testlari</div>
 
-	<!-- MOCK IMTIHONLAR BO'LIMI -->
-	<div class="section-box">
-		<h3>Mock Imtihonlar Bo'limi (Aralash)</h3>
-		<div class="variant-grid">
-			<div class="card-v" onclick="askConfirmation('all')">
-				<h4>1-Variant</h4>
-				<p>45 ta savol (90 daqiqa)</p>
-			</div>
-			<div class="card-v" style="opacity: 0.5; cursor: not-allowed;">
-				<h4>2-Variant</h4>
-				<p>Tez kunda...</p>
-			</div>
-			<div class="card-v" style="opacity: 0.5; cursor: not-allowed;">
-				<h4>3-Variant</h4>
-				<p>Tez kunda...</p>
-			</div>
-		</div>
-	</div>
-</div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('mavzulashtirilgan')">Mavzulashtirilgan testlar</button>
+        <button class="tab-btn" onclick="switchTab('mock')">Milliy sertifikat MOCK</button>
+    </div>
 
-<div class="modal-overlay" id="confirm-modal">
-	<div class="modal-box">
-		<h4 id="modal-title">Haqiqatdan ham testni boshlamoqchimisiz?</h4>
-		<p id="modal-desc">Boshlash tugmasini bosishingiz bilan 90 daqiqalik taymer ishga tushadi va test savollari ochiladi.</p>
-		<div class="modal-btns">
-			<button class="btn btn-g" id="cancel-btn" onclick="closeModal()">Bekor qilish</button>
-			<button class="btn btn-p" id="start-btn" onclick="startQuiz()">Boshlash</button>
-		</div>
-	</div>
-</div>
-
-<div class="container" id="quiz-area">
-	<div class="header">
-		<h3 id="quiz-title">Tarix Nazorati</h3>
-		<div id="timer">90:00</div>
-		<button class="btn btn-d" onclick="finishQuiz()">Tugatish</button>
-	</div>
-	<div id="questions-container"></div>
-	<button class="btn btn-p" id="submit-quiz-btn" style="width:100%; margin-top:25px; padding:16px; font-size:16px;" onclick="finishQuiz()">Imtihonni Yakunlash</button>
-</div>
-
-<div class="container" id="result-screen">
-	<h2>Imtihon Yakunlandi!</h2>
-	<p style="color: #64748b; margin-top: 8px;">Xatolar va to'g'ri kalitlar savollar tagida qizil va yashil rangda ko'rsatildi.</p>
-	<div class="score-box" id="score-text"></div>
-	<button class="btn btn-p" onclick="window.location.reload()">Bosh sahifaga qaytish</button>
-</div>
-
-<script>
-// Savollar bazasi (Hech qanday maxsus teg yoki guruhlash yo'q - toza variant)
-const quizData = [
-	{ id: 1, type: 'choice', q: "1. Qaysi voqeadan so'ng podsho hukumati moliya vazirligi qoshida Turkistonni taftish qiluvchi maxsus taftish komissiyasi tuzildi?", answers: ["A) Andijon qo'zg'oloni", "B) Jizzax qo'zg'oloni", "C) Dukchi eshon voqeasi", "D) 1916-yilgi qo'zg'olon"], correct: "C" },
-	{ id: 2, type: 'choice', q: "2. Kimning rahbarligidagi taftish komissiyasi o'lka boshqaruv tizimi, sud va moliya idoralarini tekshirdi?", answers: ["A) Palen", "B) Girs", "C) Kuropatkin", "D) Kaufman"], correct: "B" },
-	{ id: 3, type: 'choice', q: "3. Aleksandr II farmoniga ko'ra, Sirdaryo va Semireche viloyatlaridan iborat Turkiston general-gubernatorligi qachon tuzildi?", answers: ["A) 1865-yil 11-iyul", "B) 1867-yil 11-iyul", "C) 1876-yil 11-iyul", "D) 1886-yil 11-iyul"], correct: "B" },
-	{ id: 4, type: 'choice', q: "4. Podsho hukumati tomonidan 1886-yilda qabul qilingan nizomga ko'ra, Turkiston general-gubernatorligi tarkibida nechta viloyat tashkil etildi?", answers: ["A) 3 ta", "B) 4 ta", "C) 5 ta", "D) 6 ta"], correct: "A" },
-	{ id: 5, type: 'choice', q: "5. Rossiya imperiyasida 1916-yil 25-iyunda qabul qilingan farmon nima haqida edi?", answers: ["A) Soliqlarni oshirish haqida", "B) Mardikorlikka olish haqida", "C) Yerlarni musodara qilish haqida", "D) Harbiy holat joriy etish haqida"], correct: "B" },
-	{ id: 6, type: 'choice', q: "6. 1916-yil iyul oyida Jizzax qo'zg'oloniga rahbarlik qilgan va Jizzax amiri deb e'lon qilingan shaxs kim edi?", answers: ["A) Nazirxo'ja eshon", "B) Boboxon chinni", "C) Qurbonjon dodxoh", "D) Abdurahmonbiy"], correct: "A" },
-	{ id: 7, type: 'choice', q: "7. Turkistonda jadidchilik harakatining asoschisi va otasi deb kim e'tirof etiladi?", answers: ["A) Mahmudxo'ja Behbudiy", "B) Munavvarqori Abdurashidxonov", "C) Ismoil Gasprinskiy", "D) Abdurauf Fitrat"], correct: "A" },
-	{ id: 8, type: 'choice', q: "8. Munavvarqori Abdurashidxonov tomonidan Toshkentda ochilgan jadid maktabi qaysi mahallada joylashgan edi?", answers: ["A) Ko'kcha", "B) Darxon", "C) Mergancha", "D) O'qchi"], correct: "D" },
-	{ id: 9, type: 'choice', q: "9. 1911-yilda Toshkentda jadidlar tomonidan tuzilgan va mahalliy yoshlarni chet elda o'qitishni maqsad qilgan jamiyat nomini toping.", answers: ["A) Nashriyot", "B) Turon", "C) Jamiyati xayriya", "D) Ma'rifat"], correct: "B" },
-	{ id: 10, type: 'choice', q: "10. Mahmudxo'ja Behbudiyning Turkiston muxtoriyati g'oyasi ilgari surilgan va millat ma'rifatiga bag'ishlangan mashhur dramatik asari qaysi?", answers: ["A) Padarkush", "B) Baxtsiz kuyov", "C) Mazlumlar", "D) Jahl qurboni"], correct: "A" },
-	{ id: 11, type: 'choice', q: "11. 1917-yil aprelda Toshkentda o'tkazilgan Butunturkiston musulmonlarining qurultoyida qaysi tashkilot tuzildi?", answers: ["A) Sho'roi Islomiya", "B) Sho'roi Ulamo", "C) Yosh buxoroliklar", "D) Yosh xivaliklar"], correct: "A" },
-	{ id: 12, type: 'choice', q: "12. 1917-yil noyabrda Qo'qonda bo'lib o'tgan o'lka musulmonlarining favqulodda IV qurultoyida qanday tarixiy voqea yuz berdi?", answers: ["A) Buxoro amirligi tugatildi", "B) Turkiston muxtoriyati e'lon qilindi", "C) Xiva xonligi ag'darildi", "D) Sho'rolar hukumati tuzildi"], correct: "B" },
-	{ id: 13, type: 'choice', q: "13. Turkiston muxtoriyati hukumating birinchi raisi va ichki ishlar vaziri etib kim saylangan edi?", answers: ["A) Mustafo Cho'kayev", "B) Ubaydulla Xo'jayev", "C) Muhammadjon Tinishboyev", "D) Fayzulla Xo'jayev"], correct: "C" },
-	{ id: 14, type: 'choice', q: "14. Podsho hukumati tomonidan 1873-yilda imzolangan Gandimiyon shartnomasiga ko'ra qaysi davlat Rossiya protektoratiga aylandi?", answers: ["A) Qo'qon xonligi", "B) Buxoro amirligi", "C) Xiva xonligi", "D) Eron davlati"], correct: "C" },
-	{ id: 15, type: 'choice', q: "15. 1868-yilgi tinchlik shartnomasiga ko'ra Rossiya imperiyasi tarkibiga qo'shib olingan va Buxoro amirligiga tegishli bo'lgan shahar qaysi?", answers: ["A) Xiva", "B) Qo'qon", "C) Samarqand", "D) Toshkent"], correct: "C" },
-	{ id: 16, type: 'choice', q: "16. 1876-yilda butunlay tugatilib, o'rniga Farg'ona viloyati tashkil etilgan o'lka davlati qaysi edi?", answers: ["A) Xiva xonligi", "B) Qo'qon xonligi", "C) Buxoro amirligi", "D) Qozoq xonligi"], correct: "B" },
-	{ id: 17, type: 'choice', q: "17. Jadid ziyolilari tomonidan chop etilgan, milliy g'oyalarni targ'ib qiluvchi Toshkentdagi ilk jadid gazetasini aniqlang.", answers: ["A) Sadoi Turkiston", "B) Sadoi Farg'ona", "C) Taraqqiy", "D) Najot"], correct: "C" },
-	{ 
-		id: 18, type: 'choice', 
-		q: "18. Quyidagi qaysi qatorda Turkiston muxtoriyati hukumati a'zolari va ularning egallagan lavozimlari nomuvofiq berilgan?",
-		hasTable: true,
-		tableData: {
-			headers: ["Hukumat a'zolari", "Egallagan lavozimlari"],
-			rows: [
-				["1) Muhammadjon Tinishboyev", "a) Ichki ishlar vaziri"],
-				["2) Islom Shoahmedov", "b) Hukumat raisi va ichki ishlar vaziri"],
-				["3) Mustafo Cho'kayev", "c) Tashqi ishlar vaziri"],
-				["4) Ubaydulla Xo'jayev", "d) Harbiy vazir"],
-				["5) Solomon Gersfeld", "e) Moliya vaziri"]
-			]
-		},
-		answers: ["A) 2, 4", "B) 3, 8", "C) 3, 5", "D) 1, 5"], 
-		correct: "C" 
-	},
-	{ 
-		id: 19, type: 'choice', q: "19. Tarixiy voqea va uning natijasi o'zaro mos berilmagan javoblar to'liq ko'rsatilgan qatorni aniqlang.",
-		hasTable: true, tableData: { headers: ["Tarixiy voqea", "Natijasi"], rows: [["1) 1918-yil aprel", "a) Turkiston MSSR tuzildi"], ["2) 1920-yil aprel", "b) Xorazm XSR tuzildi"], ["3) 1920-yil sentyabr", "c) Buxoro XSR tuzildi"], ["4) 1924-yil oktyabr", "d) O'zbekiston SSR tuzildi"]] }, answers: ["A) 2, 3, 5, 6", "B) 1, 4, 6, 7", "C) 1, 3, 4, 7", "D) 3, 5, 6, 7"], correct: "A" 
-	},
-	{ 
-		id: 20, type: 'choice', q: "20. Quyidagi ma'lumotlarni tahlil qilib, Eyler-Venn diagrammasiga mos keladigan javobni aniqlang.",
-		hasTable: true, tableData: { headers: ["Usmon Yusupov", "Umumiy xususiyat", "Sharof Rashidov"], rows: [["1) Katta Farg'ona kanali qurilishi", "3) Respublika rahbari bo'lgan", "5) Mirzacho'lni o'zlashtirish"], ["2) Ikkinchi jahon urushi yillari", "4) Toshkent zilzilasi tiklanishi", "6) Paxta yakka xokimligi davri"]] }, answers: ["A) I - 1,2; II - 3,6; III - 5", "B) I - 1,4; II - 2,6; III - 5", "C) I - 1,4; II - 3,6; III - 5", "D) I - 1,3; II - 4,6; III - 5"], correct: "C" 
-	},
-	{ id: 21, type: 'choice', q: "21. O'rta asrlarda qaysi amerika xalqlari maxsus tepaliklar yasab ehromlar barpo etganlar?", answers: ["A) mayyalar", "B) asteklar", "C) kechualar", "D) olmeklar"], correct: "A" },
-	{ 
-		id: 22, type: 'choice', q: "22. Quyidagi ma'lumotlarni ularga aloqador davlatlar bilan to'g'ri muvofiqlashtiring.",
-		hasTable: true, tableData: { headers: ["Ma'lumotlar", "Davlatlar"], rows: [["1) Siyosiy tarqoqlik", "a) Hindiston"], ["2) Boburiylar inqirozi", "b) Xitoy"], ["3) Sin sulolasi", "c) Eron"]] }, answers: ["A) 1 - d, 2 - a, 3 - b", "B) 1 - d, 2 - b, 3 - c", "C) 1 - c, 2 - a, 3 - b", "D) 1 - c, 2 - d, 3 - a"], correct: "A" 
-	},
-	{ id: 23, type: 'choice', q: "23. XVIII asrda qaysi davlat (lar) da konstitutsiya qabul qilingan edi?", answers: ["A) 1, 5", "B) 3", "C) 5", "D) 3, 5"], correct: "D" },
-	{ id: 24, type: 'choice', q: "24. Quyidagi qaysi qatorda xonliklar davridagi yer turlari noto'g'ri berilgan?", answers: ["A) xos mulk", "B) taqiq yer", "C) chek yer", "D) vaqf yeri"], correct: "A" },
-	{ id: 25, type: 'choice', q: "25. Qo'qon xonligida harbiylarga berilgan yerlar qanday nom bilan atalgan?", answers: ["A) muki hur xolis", "B) tarxon yerlari", "C) chek yerlari", "D) tanho yerlari"], correct: "D" },
-	{ id: 26, type: 'choice', q: "26. Ilk o'rta asrlardagi shahriston qurilishi qaysi shaharlardagi qazishmalar orqali o'rganilgan?", answers: ["A) 2, 3, 4", "B) 2, 4, 6", "C) 2, 3, 5", "D) 2, 4, 5"], correct: "D" },
-	{ id: 27, type: 'choice', q: "27. O'zaro muvofiqlik to'g'ri saqlangan javobni toping.", answers: ["A) I - a - 1; II - b - 2", "B) I - b - 1; II - a - 2", "C) I - c - 1; II - a - 2", "D) I - d - 1; II - c - 2"], correct: "A" },
-	{ id: 28, type: 'choice', q: "28. O'rta Osiyoga arablar bosqini arafasida Xorazmda qaysi sulola hukmronlik qilayotgan edi?", answers: ["A) Ma'muniylar", "B) Anushteginiylar", "C) Afrig'iylar", "D) Siyovushlar"], correct: "C" },
-	{ id: 29, type: 'choice', q: "29. O'zbekistonning davlat ramzlari qabul qilingan Oliy Kengash sessiyalarini to'g'ri muvofiqlashtiring.", answers: ["A) a - 1, b - 2, c - 4", "B) a - 1, b - 3, c - 4", "C) a - 1, b - 4, c - 2", "D) a - 1, b - 2, c - 5"], correct: "B" },
-	{ id: 30, type: 'choice', q: "30. Mualliflar va ularning asarlari to'g'ri moslashtirilgan javobni toping.", answers: ["A) 1-e, 2-d, 3-b", "B) 1-e, 2-c, 3-b", "C) 1-e, 2-f, 3-c", "D) 1-a, 2-c, 3-b"], correct: "B" },
-	{ id: 31, type: 'choice', q: "31. Chizmada nomi keltirilgan shaxslar ilmiy yangiliklarini moslashtiring.", answers: ["A) 1-e, 2-d", "B) 1-e, 2-b", "C) 1-c, 2-a", "D) 1-a, 2-b"], correct: "B" },
-	{ id: 32, type: 'choice', q: "32. O'zbekiston SSRda XX asr 40-yillar oxiridagi qatag'onlar asosan kimlarga qarshi qaratilgan edi?", answers: ["A) siyosiy elita vakillariga", "B) madaniyat va fan arboblariga", "C) maorif xodimlariga", "D) harbiylarga"], correct: "B" },
-	{ 
-		id: 33, type: 'choice', 
-		q: "33. Berilgan xronologik jadvalni tahlil qilib, voqealarning to'g'ri ketma-ketligini aniqlang.",
-		hasTable: true, tableData: { headers: ["Yil", "Tarixiy voqea"], rows: [["1) 1865-yil", "a) Toshkentning bosib olinishi"], ["2) 1868-yil", "b) Buxoro bilan tinchlik shartnomasi"], ["3) 1873-yil", "c) Gandimiyon shartnomasi"], ["4) 1876-yil", "d) Qo'qon xonligining tugatilishi"]] }, answers: ["A) 1-a, 2-b, 3-c, 4-d", "B) 1-b, 2-a, 3-d, 4-c", "C) 1-c, 2-d, 3-a, 4-b", "D) 1-d, 2-c, 3-b, 4-a"], correct: "A" 
-	},
-	{ 
-		id: 34, type: 'choice', 
-		q: "34. Quyidagi jadvalda Birinchi jahon urushi arafasidagi harbiy-siyosiy bloklar ko'rsatilgan. Qayerda xato bor?",
-		hasTable: true, tableData: { headers: ["Harbiy-siyosiy blok", "A'zo davlatlar"], rows: [["1) Antanta ittifoqi", "Buyuk Britaniya, Fransiya, Rossiya"], ["2) Uchlar ittifoqi", "Germaniya, Avstriya-Vengriya, Italiya"], ["3) Antanta bloki", "AQSh, Usmonli imperiyasi, Yaponiya"]] }, answers: ["A) Faqat 1", "B) Faqat 2", "C) Faqat 3", "D) 1 va 2"], correct: "C" 
-	},
-	{ 
-		id: 35, type: 'choice', 
-		q: "35. Qadimgi Lotin Amerikasi madaniyati va xalqlari tarixiga oid ma'lumotlarni to'g'ri muvofiqlashtiring.",
-		hasTable: true, tableData: { headers: ["Xalqlar", "Ularga xos xususiyatlar"], rows: [["1) Mayyalar", "a) Zinapoyali ehromlar qurishgan"], ["2) Asteklar", "b) Ulkan tosh haykallar barpo etishgan"], ["3) Inklar", "c) Mukammal yo'l tizimini yaratishgan"]] }, answers: ["A) 1-a, 2-b, 3-c", "B) 1-b, 2-a, 3-c", "C) 1-c, 2-b, 3-a", "D) 1-a, 2-c, 3-b"], correct: "A" 
-	},
-	{ id: 36, type: 'open', q: "36. 1206-1526-yillarda Dehli sultonligi faoliyat yuritgan.", sub: [{ label: "a) Ushbu davlat hukmdorlaridan qaysi biri Bengaliyani bo'ysundiradi?", correct: "SHAMSIDDIN ELTUTMISH" }, { label: "b) Ushbu davlatda qanday yer egaligidan tushgan soliq qo'shinni ta'minlash uchun ishlatilgan?", correct: "XOLISA" }] },
-	{ id: 37, type: 'open', q: "37. 1840-1842-yillarda Buyuk Britaniya Xitoyga qarshi urush harakatlarini olib bordi.", sub: [{ label: "a) Urush tarixga qanday nom bilan kirganligini yozing.", correct: "BIRINCHI AFYUN URUSHI" }, { label: "b) Urush yakuniga ko'ra Buyuk Britaniya qayerni bosib olgan edi?", correct: "GONGKONG OROLINI" }] },
-	{ id: 38, type: 'open', q: "38. 2016-2017-yillari Boltiqbo'yi mamlakatlariga NATONing qo'shinlari joylashtirildi.", sub: [{ label: "a) Bu davrda «G'arb - 2017» harbiy mashqlari qaysi davlatlar tomonidan o'tkazilgan?", correct: "ROSSIYA VA BELORUS" }, { label: "b) Qaysi voqeadan so'ng Boltiqbo'yi davlatlari xavfsizlikni kuchaytirdi?", correct: "UKRAINA INQIROZI" }] },
-	{ id: 39, type: 'open', q: "39. XX asr oxiri – XXI asr boshlarida Misr iqtisodiy rivojlanishda katta yutuqlarni qo'l kiritdi.", sub: [{ label: "a) Bu davrda iste'foga chiqqan Misr prezidentini aniqlang.", correct: "HUSNI MUBORAK, 2011-YIL" }, { label: "b) Muhammad Mursi qaysi tashkilot yetakchisi edi?", correct: "«MUSULMON BIRODARLAR» RADIKAL TASHKILOTI" }] },
-	{ id: 40, type: 'open', q: "40. Koreya yarimorolining janubiy qismida III – IV asrlarda Pekche davlati vujudga keldi.", sub: [{ label: "a) Pekche qachon markazlashgan davlatga aylanadi?", correct: "IV ASRDA" }, { label: "b) Pekche sulolasi hukmdorlari orqali qayerga xitoy yozuv va buddizm kirib keladi?", correct: "KOREYA" }] },
-	{ id: 41, type: 'open', q: "41. V asrda nisbatan qadimiyroq bo'lgan qishloq o'rniga yangi shahar barpo etiladi.", sub: [{ label: "a) Birinchi nuqtalar o'rniga mos keluvchi javobni yozing:", correct: "PANJIKENT" }, { label: "b) Ikkinchi nuqtalar o'rniga mos keluvchi javobni yozing:", correct: "BUXORO" }] },
-	{ id: 42, type: 'open', q: "42. XIX asr boshlarida shoh Mahmud Afg'onistonda hokimiyatni ikkinchi marta egalladi.", sub: [{ label: "a) Mahmudning hokimiyatni qayta egallashiga yordam ko'rsatgan Xiva xonini aniqlang.", correct: "MUHAMMAD RAHIMXON I" }, { label: "b) Shoh Mahmud qaysi sulola vakili ekanligini aniqlang.", correct: "ABDALI (DURRONIY)" }] },
-	{ id: 43, type: 'open', q: "43. 1873-yilda Buxoro amirligi va Rossiya imperiyasi o'rtasida shartnoma imzolandi.", sub: [{ label: "a) Shartnoma imzolagan Buxoro amirini aniqlang.", correct: "AMIR MUZAFFAR" }, { label: "b) Bu vaqtdagi Rossiya imperatorini aniqlang.", correct: "ALEKSANDR II" }] },
-	{ id: 44, type: 'open', q: "44. Matnli savol: «Fashizmga qarshi kurashishda front ortida matonat bilan mehnat qilgan..."", sub: [{ label: "a) O'sha vaqtda respublikaga rahbarlik qilgan qaysi shaxsning xizmati katta bo'ldi?", correct: "USMON YUSUPOV" }, { label: "b) Urush yillarida 10 nafar yetim bolani asrab olgan shaxsni aniqlang.", correct: "FOTIMA QOSIMOVA" }] },
-	{ id: 45, type: 'open', q: "45. Vatanimiz hududida V–VII asrlarda shaharlarning ravnaqi avj oldi.", sub: [{ label: "a) bu davrda maydoni jihatidan eng yirik shahar qaysi ekanligini aniqlang.", correct: "SAMARQAND" }, { label: "b) bu davrda qaysi shaharning maydoni 20 gektardan oshmagan?", correct: "BUXORO VA POYKAND" }] }
-];
-
-let currentMode = "all"; 
-let activeQuestions = [];
-let timeLeft = 90 * 60;
-let timerInterval;
-
-function askConfirmation(mode) {
-	currentMode = mode;
-	const modal = document.getElementById('confirm-modal');
-	const title = document.getElementById('modal-title');
-	const desc = document.getElementById('modal-desc');
-	const startBtn = document.getElementById('start-btn');
-	const cancelBtn = document.getElementById('cancel-btn');
-
-	if (mode !== 'all') {
-		title.innerText = "Eslatma!";
-		desc.innerText = "Hozircha ushbu bo'limga test savollari yuklanmagan. Tez kunda yangi savollar qo'shiladi.";
-		startBtn.style.display = 'none'; 
-		cancelBtn.innerText = "Yopish";
-	} else {
-		title.innerText = "1-Variant (Mock) testini boshlamoqchimisiz?";
-		desc.innerText = "Boshlash tugmasini bosishingiz bilan 90 daqiqalik taymer ishga tushadi va test savollari ochiladi.";
-		startBtn.style.display = 'inline-block';
-		cancelBtn.innerText = "Bekor qilish";
-		document.getElementById('quiz-title').innerText = "1-Variant: Aralash Mock";
-	}
-
-	modal.style.display = 'flex';
-}
-
-function closeModal() {
-	document.getElementById('confirm-modal').style.display = 'none';
-}
-
-function startQuiz() {
-	closeModal();
-	document.getElementById('menu-screen').style.display = 'none';
-	document.getElementById('quiz-area').style.display = 'block';
-    
-	activeQuestions = [...quizData];
-	renderQuiz();
-    
-	timeLeft = 90 * 60; 
-	timerInterval = setInterval(() => {
-		const mins = Math.floor(timeLeft / 60);
-		const secs = timeLeft % 60;
-		document.getElementById('timer').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-		if(timeLeft <= 0) { finishQuiz(); }
-		timeLeft--;
-	}, 1000);
-}
-
-function renderQuiz() {
-	const container = document.getElementById('questions-container');
-	container.innerHTML = ""; 
-
-	activeQuestions.forEach((q) => {
-		const card = document.createElement('div');
-		card.className = 'q-card';
-		card.id = `q-box-${q.id}`;
-
-		if (q.type === 'open' && !document.querySelector('.alert')) {
-			const alert = document.createElement('div');
-			alert.className = 'alert';
-			alert.innerText = "Diqqat! Ochiq savollarga javoblaringizni faqat KATTA harflarda kiriting.";
-			container.appendChild(alert);
-		}
-
-		const qTitle = document.createElement('div');
-		qTitle.className = 'q-txt';
-		qTitle.innerText = q.q;
-		card.appendChild(qTitle);
-
-		if(q.hasTable && q.tableData) {
-			const table = document.createElement('table');
-			table.className = 'q-table';
-			let headerRow = '<tr>';
-			q.tableData.headers.forEach(h => headerRow += `<th>${h}</th>`);
-			headerRow += '</tr>';
-			table.innerHTML = headerRow;
-
-			q.tableData.rows.forEach(r => {
-				let rowHtml = '<tr>';
-				r.forEach(cell => rowHtml += `<td>${cell}</td>`);
-				rowHtml += '</tr>';
-				table.innerHTML += rowHtml;
-			});
-			card.appendChild(table);
-		}
-
-		if(q.type === 'choice') {
-			const optsDiv = document.createElement('div');
-			optsDiv.className = 'options';
-			q.answers.forEach(opt => {
-				const label = document.createElement('label');
-				label.className = 'opt';
-				label.innerHTML = `<input type="radio" name="q-${q.id}" value="${opt[0]}"> ${opt}`;
-				label.onclick = () => {
-					document.querySelectorAll(`input[name="q-${q.id}"]`).forEach(i => i.parentElement.classList.remove('selected'));
-					label.classList.add('selected');
-				};
-				optsDiv.appendChild(label);
-			});
-			card.appendChild(optsDiv);
-		} else if(q.type === 'open') {
-			q.sub.forEach((s, sIdx) => {
-				const subDiv = document.createElement('div');
-				subDiv.className = 'sub-q';
-				subDiv.innerHTML = `
-					<div class="sub-title">${s.label}</div>
-					<input type="text" class="text-input" id="open-${q.id}-${sIdx}" placeholder="JAVOBNI YOZING...">
-				`;
-				subDiv.querySelector('input').addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase(); });
-				card.appendChild(subDiv);
-			});
-		}
-		container.appendChild(card);
-	});
-}
-
-function finishQuiz() {
-	clearInterval(timerInterval);
-	let correctCount = 0;
-	let totalQuestions = 0;
-
-	activeQuestions.forEach(q => {
-		const card = document.getElementById(`q-box-${q.id}`);
-		if(!card) return;
+    <div id="mavzulashtirilgan" class="content-section active">
         
-		if(q.type === 'choice') {
-			totalQuestions++;
-			const selectedInput = document.querySelector(`input[name="q-${q.id}"]:checked`);
-			const selected = selectedInput ? selectedInput.value : null;
+        <button id="backButton" class="back-btn" onclick="closeAllClasses()">⬅️ Boshqa sinflarni ko'rish</button>
+
+        <div id="btn-sinf6" class="list-item" onclick="toggleSub('sinf6', 'btn-sinf6')">📁 6-sinf. Qadimgi dunyo tarixi</div>
+        <div id="sinf6" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Kirish va eng qadimgi odamlar</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Qadimgi Misr va Ikki daryo oralig'i</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Qadimgi Hindiston va Xitoy</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. O'rta Osiyo xalqlari ilk temir davrida</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 5-mavzu. Qadimgi Yunoniston va Rim imperiyasi</div>
+        </div>
+
+        <div id="btn-sinf7uz" class="list-item" onclick="toggleSub('sinf7uz', 'btn-sinf7uz')">📁 7-sinf. O'zbekiston tarixi</div>
+        <div id="sinf7uz" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Kirish: Ilk o'rta asrlarda O'rta Osiyo</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Arab xalifaligining idorasi va Movarounnahr</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Somoniylar va Qoraxoniylar davlati</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Xorazmshohlar davlati yuksalishi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 5-mavzu. IX-XII asrlarda madaniy hayot va uyg'onish</div>
+        </div>
+
+        <div id="btn-sinf7j" class="list-item" onclick="toggleSub('sinf7j', 'btn-sinf7j')">📁 7-sinf. Jahon tarixi</div>
+        <div id="sinf7j" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. G'arbiy Yevropada feodal jamiyati</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Vizantiya imperiyasi va Slavyanlar</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Arab xalifaligining tashkil topishi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. O'rta asrlarda Hindiston, Xitoy va Yaponiya</div>
+        </div>
+
+        <div id="btn-sinf8uz" class="list-item" onclick="toggleSub('sinf8uz', 'btn-sinf8uz')">📁 8-sinf. O'zbekiston tarixi</div>
+        <div id="sinf8uz" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Mo'g'ullar istilosi va unga qarshi kurash</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Amir Temur va Temuriylar davlati</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Temuriylar davrida ilm-fan va madaniyat</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Shayboniylar va Ashtarxoniylar davri</div>
+        </div>
+
+        <div id="btn-sinf8j" class="list-item" onclick="toggleSub('sinf8j', 'btn-sinf8j')">📁 8-sinf. Jahon tarixi</div>
+        <div id="sinf8j" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Buyuk geografik kashfiyotlar</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Yevropada Uyg'onish davri va Reformatsiya</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Angliya va Fransiya burjua inqiloblari</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Amerika Qo'shma Shtatlarining tashkil topishi</div>
+        </div>
+
+        <div id="btn-sinf9uz" class="list-item" onclick="toggleSub('sinf9uz', 'btn-sinf9uz')">📁 9-sinf. O'zbekiston tarixi</div>
+        <div id="sinf9uz" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Buxoro amirligi, Xiva va Qo'qon xonliklari</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Rossiya imperiyasining xonliklarni bosib olishi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Mustamlakachilik tartibi va milliy ozodlik harakatlari</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Turkistonda jadidchilik harakatining vujudga kelishi</div>
+        </div>
+
+        <div id="btn-sinf9j" class="list-item" onclick="toggleSub('sinf9j', 'btn-sinf9j')">📁 9-sinf. Jahon tarixi</div>
+        <div id="sinf9j" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Sanoat to'ntarishi va uning oqibatlari</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. XIX asrda yetakchi G'arb davlatlari</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Osiyo va Afrika mamlakatlari yangi davrda</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Birinchi jahon urushi va uning yakunlari</div>
+        </div>
+
+        <div id="btn-sinf10" class="list-item" onclick="toggleSub('sinf10', 'btn-sinf10')">📁 10-sinf. Eng yangi davr tarixi</div>
+        <div id="sinf10" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. Turkiston muxtoriyati va sho'rolar mustamlakachiligi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. O'zbekistonda sovet hokimiyati qatag'onlari</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Ikkinchi jahon urushi yillari va front orti</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Urushdan keyingi dunyo va xalqaro munosabatlar</div>
+        </div>
+
+        <div id="btn-sinf11" class="list-item" onclick="toggleSub('sinf11', 'btn-sinf11')">📁 11-sinf. Eng yangi davr (Mustaqillik yillari)</div>
+        <div id="sinf11" class="sub-list">
+            <div class="sub-item" onclick="openTest('LINK')">📄 1-mavzu. O'zbekiston Respublikasining mustaqillikka erishishi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 2-mavzu. Davlat ramzlari va Konstitutsiyaning qabul qilinishi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 3-mavzu. Yangi O'zbekiston: Islohotlarning yangi bosqichi</div>
+            <div class="sub-item" onclick="openTest('LINK')">📄 4-mavzu. Zamonaviy dunyodagi global muammolar va integratsiya</div>
+        </div>
+
+    </div>
+
+    <div id="mock" class="content-section">
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #1</div>
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #2</div>
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #3</div>
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #4</div>
+        <div class="list-item mock-item" onclick="openTest('LINK')">📝 Milliy sertifikat Variant #5</div>
+    </div>
+
+    <script>
+        // Tablarni almashtirish
+        function switchTab(tabId) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-			document.querySelectorAll(`input[name="q-${q.id}"]`).forEach(i => {
-				i.disabled = true;
-				if(i.value === q.correct) i.parentElement.classList.add('status-correct');
-			});
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Tab almashganda hamma narsani asliga qaytarish
+            closeAllClasses();
+        }
 
-			if(selected === q.correct) {
-				correctCount++;
-				if(selectedInput) selectedInput.parentElement.insertAdjacentHTML('beforeend', '<span class="res-icon" style="color:var(--s)">✔</span>');
-			} else {
-				if(selectedInput) {
-					selectedInput.parentElement.classList.add('status-wrong');
-					selectedInput.parentElement.insertAdjacentHTML('beforeend', '<span class="res-icon" style="color:var(--d)">✖</span>');
-				}
-				card.insertAdjacentHTML('beforeend', `<div class="correct-ans">To'g'ri kalit: ${q.correct}</div>`);
-			}
-		} else if(q.type === 'open') {
-			q.sub.forEach((s, sIdx) => {
-				totalQuestions++;
-				const inputEl = document.getElementById(`open-${q.id}-${sIdx}`);
-				const userAns = inputEl.value.trim().toUpperCase(); // Har qanday holatda ham katta harfga o'tkazib tekshiradi
-				inputEl.disabled = true;
+        // Biror sinf bosilganda qolganlarini yashirish logikasi
+        function toggleSub(subListId, clickedBtnId) {
+            // Hamma asosiy sinf tugmalarini berkitish
+            document.querySelectorAll('.list-item').forEach(el => el.style.display = 'none');
+            // Hamma mavzular ro'yxatini yopish
+            document.querySelectorAll('.sub-list').forEach(el => el.style.display = 'none');
+            
+            // Faqat bosilgan sinf tugmasini va uning ichidagi mavzularni ochish
+            document.getElementById(clickedBtnId).style.display = 'block';
+            document.getElementById(subListId).style.display = 'block';
+            
+            // "Orqaga qaytish" tugmasini ko'rsatish
+            document.getElementById('backButton').style.display = 'block';
+        }
 
-				if(userAns === s.correct.toUpperCase()) {
-					correctCount++;
-					inputEl.classList.add('status-correct');
-					inputEl.insertAdjacentHTML('afterend', '<span class="res-icon" style="color:var(--s)">✔</span>');
-				} else {
-					inputEl.classList.add('status-wrong');
-					inputEl.insertAdjacentHTML('afterend', '<span class="res-icon" style="color:var(--d)">✖</span>');
-					inputEl.insertAdjacentHTML('afterend', `<br><div class="correct-ans">To'g'ri javob: ${s.correct}</div>`);
-				}
-			});
-		}
-	});
+        // Hamma sinflarni qaytadan ko'rsatish (Orqaga qaytish bosilganda)
+        function closeAllClasses() {
+            // Hamma sinf tugmalarini qayta ko'rsatish
+            document.querySelectorAll('.list-item').forEach(el => el.style.display = 'block');
+            // Hamma mavzular ro'yxatini yopish
+            document.querySelectorAll('.sub-list').forEach(el => el.style.display = 'none');
+            
+            // "Orqaga qaytish" tugmasini qayta berkitish
+            document.getElementById('backButton').style.display = 'none';
+        }
 
-	document.getElementById('quiz-area').style.opacity = "0.85";
-	document.getElementById('score-text').innerText = `${totalQuestions} tadan ${correctCount} ta to'g'ri javob`;
-	document.getElementById('result-screen').style.display = 'block';
-	window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
+        // Test havolasini ochish
+        function openTest(url) {
+            if(url !== 'LINK' && url !== '') {
+                window.location.href = url;
+            } else {
+                alert("Ushbu mavzu uchun test yaqin kunlarda yuklanadi!");
+            }
+        }
+    </script>
 </body>
 </html>
